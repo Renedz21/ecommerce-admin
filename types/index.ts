@@ -9,3 +9,9 @@ export interface IModalProps {
     onClose: () => void;
     children?: React.ReactNode;
 }
+
+export interface useStoreModalStore {
+    isOpen: boolean;
+    onClose: () => void;
+    onOpen: () => void;
+}
