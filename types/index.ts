@@ -16,8 +16,13 @@ export interface useStoreModalStore {
     onOpen: () => void;
 }
 
-export interface DashboardPageProps {
+export interface IStoreIdParamsProps {
     params: {
         storeId: string;
     }
+}
+
+export interface IHeadingProps {
+    title: string;
+    description: string;
 }

@@ -1,7 +1,7 @@
 import prismadb from "@/lib/prismadb";
-import { DashboardPageProps } from "@/types";
+import { IStoreIdParamsProps } from "@/types";
 
-export default async function DashboardPage({ params }: DashboardPageProps) {
+export default async function DashboardPage({ params }: IStoreIdParamsProps) {
 
     const store = await prismadb.store.findFirst({
         where: {
