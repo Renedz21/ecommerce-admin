@@ -18,10 +18,5 @@ export default function SetupPage() {
         onOpen
     ])
 
-    return (
-        <div>
-            This is a protected route
-            <UserButton afterSignOutUrl="/" />
-        </div>
-    )
+    return null;
 }

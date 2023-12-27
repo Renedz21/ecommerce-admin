@@ -15,3 +15,9 @@ export interface useStoreModalStore {
     onClose: () => void;
     onOpen: () => void;
 }
+
+export interface DashboardPageProps {
+    params: {
+        storeId: string;
+    }
+}
