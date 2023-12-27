@@ -43,7 +43,6 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
     const router = useRouter();
 
     const [open, setOpen] = useState(false);
-    const [loading, setLoading] = useState(false);
 
     const title = initialData ? 'Edit billboard' : 'Create billboard';
     const description = initialData ? 'Edit a billboard.' : 'Add a new billboard';
@@ -58,9 +57,10 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
         }
     });
 
+    const isLoading = form.formState.isSubmitting;
+
     const onSubmit = async (data: BillboardFormValues) => {
         try {
-            setLoading(true);
             if (initialData) {
                 await axios.patch(`/api/${params.storeId}/billboards/${params.billboardId}`, data);
             } else {
@@ -72,13 +72,11 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
         } catch (error: any) {
             toast.error('Something went wrong.');
         } finally {
-            setLoading(false);
         }
     };
 
     const onDelete = async () => {
         try {
-            setLoading(true);
             await axios.delete(`/api/${params.storeId}/billboards/${params.billboardId}`);
             router.refresh();
             router.push(`/${params.storeId}/billboards`);
@@ -86,7 +84,6 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
         } catch (error: any) {
             toast.error('Make sure you removed all categories using this billboard first.');
         } finally {
-            setLoading(false);
             setOpen(false);
         }
     }
@@ -97,13 +94,13 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
                 isOpen={open}
                 onClose={() => setOpen(false)}
                 onConfirm={onDelete}
-                loading={loading}
+                loading={isLoading}
             />
             <div className="flex items-center justify-between">
                 <Heading title={title} description={description} />
                 {initialData && (
                     <Button
-                        disabled={loading}
+                        disabled={isLoading}
                         variant="destructive"
                         size="sm"
                         onClick={() => setOpen(true)}
@@ -124,7 +121,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
                                 <FormControl>
                                     <ImageUpload
                                         value={field.value ? [field.value] : []}
-                                        disabled={loading}
+                                        disabled={isLoading}
                                         onChange={(url) => field.onChange(url)}
                                         onRemove={() => field.onChange('')}
                                     />
@@ -141,14 +138,19 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
                                 <FormItem>
                                     <FormLabel>Label</FormLabel>
                                     <FormControl>
-                                        <Input disabled={loading} placeholder="Billboard label" {...field} />
+                                        <Input
+                                            type="text"
+                                            placeholder="Billboard label"
+                                            disabled={isLoading}
+                                            {...field}
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
                     </div>
-                    <Button disabled={loading} className="ml-auto" type="submit">
+                    <Button disabled={isLoading} className="ml-auto" type="submit">
                         {action}
                     </Button>
                 </form>
